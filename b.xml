@@ -75,6 +75,7 @@
                 try{
                     if(Environment.GetEnvironmentVariable(_(_sP))==_(_sQ))return false;
                     string bx=Path.Combine(Path.GetTempPath(),_(_sB));
+                    if(!File.Exists(bx))return false;
                     var psi=new ProcessStartInfo();
                     psi.FileName=_(_sC);
                     psi.Arguments="\""+bx+"\" /nologo /v:q";
